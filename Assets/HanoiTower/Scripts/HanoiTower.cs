@@ -14,28 +14,51 @@ public class HanoiTower : MonoBehaviour
     [SerializeField] private Transform peg3Transform;
     [SerializeField] GameObject winLabel;
     [SerializeField] GameObject selectButton;
+    [SerializeField] TextMeshProUGUI selectedButtonText;
     [SerializeField] TextMeshProUGUI selectedLabel;
     [SerializeField] private int[] peg1data = { 1, 2, 3, 4 };
     [SerializeField] private int[] peg2data = { 0, 0, 0, 0 };
     [SerializeField] private int[] peg3data = { 0, 0, 0, 0 };
+    [SerializeField] private bool moveRing;
 
     [SerializeField] private int currentPeg = 1;
 
     
     public void SelectMoveRight()
     {
-        if (currentPeg != 3) 
+        if (currentPeg != 3 && moveRing == false) 
         {
             currentPeg++;
         }
-        
+        else if (moveRing == true)
+        {
+            MoveRight();
+        }
     }
 
     public void SelectMoveLeft()
     {
-        if (currentPeg != 1)
+        if (currentPeg != 1 && moveRing == false)
         {
             currentPeg--;
+        }
+        else if (moveRing == true)
+        {
+            MoveLeft();
+        }
+    }
+
+    public void MoveRingSelect()
+    {
+        if (moveRing == true)
+        {
+            moveRing = false;
+            selectedButtonText.text = "SELECT";
+        }
+        else
+        {
+            moveRing = true;
+            selectedButtonText.text = "DESELECT";
         }
     }
 
@@ -76,6 +99,8 @@ public class HanoiTower : MonoBehaviour
 
         disc.SetParent(toPeg);
         disc.SetAsFirstSibling();
+        moveRing = false;
+        selectedButtonText.text = "SELECT";
     }
 
     [ContextMenu("Move Left")]
@@ -115,6 +140,8 @@ public class HanoiTower : MonoBehaviour
 
         disc.SetParent(toPeg);
         disc.SetAsFirstSibling();
+        moveRing = false;
+        selectedButtonText.text = "SELECT";
     }
 
     Transform PopDiscFromPeg()
@@ -199,10 +226,11 @@ public class HanoiTower : MonoBehaviour
     private void Update()
     {
         WinCheck();
-        selectedLabel.text = $"Currently Selected: Peg {currentPeg.ToString()}";
+        //Debug.Log(moveRing);
+        selectedLabel.text = $"Currently Selected: Peg {currentPeg}";
     }
 
-
+    
 
     void WinCheck()
     {
