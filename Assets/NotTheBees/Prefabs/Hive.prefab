@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaefaec5894e5424d8d60d34d365d57f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  honeyProductionRate: 2
-  startingNumberOfBees: 2
+  honeyProductionRate: 5
+  startingNumberOfBees: 1
   beePrefab: {fileID: 6051203100981340834, guid: b036c16332f08b541afb8ac5a1445031, type: 3}
   honeyLabel: {fileID: 0}

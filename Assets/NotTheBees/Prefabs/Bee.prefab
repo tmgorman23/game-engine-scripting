@@ -97,4 +97,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281d7de579b71f64cb2b8889b40f8103, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxCheckFlowerTime: 0
+  maxCheckFlowerTime: 1

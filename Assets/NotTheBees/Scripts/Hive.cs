@@ -20,11 +20,7 @@ namespace NotTheBees
         {
             time = honeyProductionRate;
 
-            for (int i = 0; i < startingNumberOfBees; i++)
-            {
-                GameObject bee = Instantiate(beePrefab, transform.position, beePrefab.transform.rotation);
-                bee.GetComponent<Bee>().Init(this);
-            }
+            ProduceBees(startingNumberOfBees);
         }
 
         // Update is called once per frame
@@ -32,12 +28,14 @@ namespace NotTheBees
         {
             if (HasNectar() == false) return;
             ProduceHoney();
+            if (CanSpawnBees() == false) return;
+            ProduceBees(1);
             
         }
 
         public void GiveNectar()
         {
-            Debug.Log($"Nectar Delivered, HasNectar is {HasNectar()}, nectar amount is {nectar}, time: {time}, honey: {honey}");
+            //Debug.Log($"Nectar Delivered, HasNectar is {HasNectar()}, nectar amount is {nectar}, time: {time}, honey: {honey}");
             honeyLabel.text = "Honey: " + honey.ToString();
             nectar++;
         }
@@ -68,6 +66,25 @@ namespace NotTheBees
                 nectar--;
                 honey++;
                 time = honeyProductionRate;
+            }
+        }
+
+        bool CanSpawnBees()
+        {
+            if (honey >= 5)
+            {
+                honey -= 5;
+                return true;
+            }
+            return false;
+        }
+        
+        void ProduceBees(int numberOfBeesToSpawn)
+        {
+            for (int i = 0; i < numberOfBeesToSpawn; i++)
+            {
+                GameObject bee = Instantiate(beePrefab, transform.position, beePrefab.transform.rotation);
+                bee.GetComponent<Bee>().Init(this);
             }
         }
     }
