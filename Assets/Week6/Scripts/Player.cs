@@ -4,15 +4,22 @@ using UnityEngine.InputSystem.Controls;
 
 public class Player : MonoBehaviour
 {
+    float xAccumulator; // this is a member variable, NOT a local!
+    float yAccumulator; // this is a member variable, NOT a local!
+
+    const float Snappiness = 1.0f; // larger values of this cause less filtering, more responsiveness
+
     [SerializeField]
     float speed = 5.0f;
     [SerializeField]
-    float rotation = 5.0f;
+    float rotation = 250.0f;
     [SerializeField]
     float jump = 10f;
 
     //public PlayerControls playerControls;
     PlayerControllerMappings mappings;
+
+    //public PlayerController playerController;
 
     private float mouseDeltaX = 0f;
     private float mouseDeltaY = 0f;
@@ -60,8 +67,8 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        HandleHorizontalRotation();
-        HandleVerticalRotation();
+        //HandleHorizontalRotation();
+        //HandleVerticalRotation();
     }
 
     private void FixedUpdate()
@@ -108,7 +115,9 @@ public class Player : MonoBehaviour
     {
         mouseDeltaX = look.ReadValue<Vector2>().x;
 
-        if (mouseDeltaX != 0)
+        xAccumulator = Mathf.Lerp(xAccumulator, mouseDeltaX, Snappiness);// * Time.deltaTime);
+
+        if (xAccumulator != 0)
         {
             rotDir = mouseDeltaX > 0 ? 1 : -1;
 
@@ -120,11 +129,12 @@ public class Player : MonoBehaviour
     {
         mouseDeltaY = look.ReadValue<Vector2>().y;
 
-        if (mouseDeltaY != 0)
+        yAccumulator = Mathf.Lerp(yAccumulator, mouseDeltaY, Snappiness);
+        if (yAccumulator != 0)
         {
             rotDir = mouseDeltaY > 0 ? -1 : 1;
 
-            cameraRotX += rotation * Time.deltaTime * rotDir;
+            cameraRotX += (rotation/2) * Time.deltaTime * rotDir;
             cameraRotX = Mathf.Clamp(cameraRotX, -45f, 45f);
 
             var targetRotation = Quaternion.Euler(Vector3.right * cameraRotX);
